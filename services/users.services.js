@@ -1,4 +1,4 @@
-const { getAll,getbyid } = require("../models/users.models")
+const { getAll,getbyid, addUser } = require("../models/users.models")
 
 async function getAllUser() {
     const data = await getAll()
@@ -23,7 +23,7 @@ async function getUserById(id) {
     if(data){
         return {
             error:false,
-            data:data,
+            data:data[0],
             message:"User Fetched Successfully By ID"
         }
     }
@@ -36,8 +36,21 @@ async function getUserById(id) {
 }
 
 
-function insertUser(formData) {
-    return "insert user by id Service Called"
+async function insertUser(formData) {
+    const data = await addUser(formData)
+    if(data){
+        return {
+            error:false,
+            data:data,
+            message:"User Inserted Successfully"
+        }
+    }
+    else{
+        return{
+            error:true,
+            message:"User Inserted Unsuccessfull "
+        }
+    }
 }
 
 function updateUser(id, formData) {

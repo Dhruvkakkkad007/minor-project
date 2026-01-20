@@ -11,15 +11,33 @@ async function getAll() {
 
 async function getbyid(id) {
     try {
-        const [data,fields] = await db.query('SELECT * FROM `users` where UserID = '+id)
+        const [data, fields] = await db.query('SELECT * FROM `users` where UserID = ' + id)
         return data
     } catch (err) {
         return false
     }
 }
 
+async function addUser(formData) {
+    try {
+         const [data, fields] = await db.query(`INSERT INTO users(UserID, UserName, Password) VALUES (NULL,'${formData.UserName}','${formData.Password}');`)
+         return data
+    } catch (err) {
+        return false
+    }
+}
 
-module.exports = { getAll,getbyid }
+// async function editUser(id) {
+//     try {
+//          const [data, fields] = await db.query(`INSERT INTO users(UserID, UserName, Password) VALUES (NULL,'${formdata.Username}','${formData.Password}');`)
+//          return data
+//     } catch (err) {
+//         return false
+//     }
+// }
+
+
+module.exports = { getAll, getbyid,addUser }
 
 
 
