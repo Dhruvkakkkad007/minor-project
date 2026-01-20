@@ -6,7 +6,7 @@ async function getAllUser() {
         return {
             error: false,
             data:data,
-            message: "User Fetched Successfully"
+            message: "User Fetched Successfully 100%"
         }
     }
     else {
