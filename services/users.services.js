@@ -1,4 +1,4 @@
-const { getAll,getbyid, addUser } = require("../models/users.models")
+const { getAll,getbyid, addUser, editUser,deleteu } = require("../models/users.models")
 
 async function getAllUser() {
     const data = await getAll()
@@ -53,12 +53,38 @@ async function insertUser(formData) {
     }
 }
 
-function updateUser(id, formData) {
-    return "update user by id Service Called" + id
+async function updateUser(id, formData) {
+       const data = await editUser(id,formData)
+    if(data){
+        return {
+            error:false,
+            data,
+            message:"User Inserted Successfully"
+        }
+    }
+    else{
+        return{
+            error:true,
+            message:"User Inserted Unsuccessfull "
+        }
+    }
 }
 
-function deleteuser(id) {
-    return "get user by id Service Called" + id
+async function deleteuser(id) {
+       const data = await deleteu(id)
+    if(data){
+        return {
+            error:false,
+            data:data,
+            message:"User Deleted Successfully"
+        }
+    }
+    else{
+        return{
+            error:true,
+            message:"User Deleted Unsuccessfull"
+        }
+    }
 }
 
 module.exports = { getAllUser, getUserById, insertUser, deleteuser, updateUser }

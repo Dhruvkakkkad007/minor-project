@@ -22,7 +22,7 @@ routeUser.post('/add', async(req, res) => {
 })
 
 //edit
-routeUser.patch('/edit/:id', async(req, res) => {
+routeUser.put('/:id', async(req, res) => {
     const data = await updateUser(req.params.id,req.body)
     res.send(data)
 })
