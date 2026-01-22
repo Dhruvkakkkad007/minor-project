@@ -45,12 +45,16 @@ async function deleteu(id) {
     }
 }
 
+async function getbyUsername(un) {
+    try {
+        const [data, fields] = await db.query(`SELECT * FROM users where Username='${un}'`)
+        return data[0]
+    } catch (err) {
+        return false
+    }
+}
 
-
-
-
-
-module.exports = { getAll, getbyid, addUser, editUser, deleteu }
+module.exports = { getAll, getbyid, addUser, editUser, deleteu,getbyUsername}
 
 
 

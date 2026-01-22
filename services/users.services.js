@@ -1,4 +1,4 @@
-const { getAll,getbyid, addUser, editUser,deleteu } = require("../models/users.models")
+const { getAll,getbyid, addUser, editUser,deleteu,getbyUsername } = require("../models/users.models")
 
 async function getAllUser() {
     const data = await getAll()
@@ -31,6 +31,25 @@ async function getUserById(id) {
         return{
             error:true,
             message:"User Fetched Unsuccessfull By ID"
+        }
+    }
+}
+
+
+async function checkLogin(formData) {
+    const data = await getbyUsername(formData.UserName)
+
+    if(data){
+        return {
+            error:false,
+            data:data,
+            message:"User Login"
+        }
+    }
+    else{
+        return{
+            error:true,
+            message:"Login Unsuccessfull"
         }
     }
 }
@@ -87,4 +106,4 @@ async function deleteuser(id) {
     }
 }
 
-module.exports = { getAllUser, getUserById, insertUser, deleteuser, updateUser }
+module.exports = { getAllUser, getUserById, insertUser, deleteuser, updateUser,checkLogin}
