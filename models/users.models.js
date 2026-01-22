@@ -29,7 +29,7 @@ async function addUser(formData) {
 
 async function editUser(id, formData) {
     try {
-        const [data, fields] = await db.query(`UPDATE users SET UserName = ${formData.UserName}, Password = ${formData.Password} WHERE users.UserID = ${id};`)
+        const [data, fields] = await db.query(`UPDATE users SET UserName = '${formData.UserName}', Password = '${formData.Password}' WHERE users.UserID = ${id};`)
         return data
     } catch (err) {
         return false

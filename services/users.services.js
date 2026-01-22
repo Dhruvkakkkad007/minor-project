@@ -58,14 +58,14 @@ async function updateUser(id, formData) {
     if(data){
         return {
             error:false,
-            data,
-            message:"User Inserted Successfully"
+            data: data,
+            message:"User updated Successfully"
         }
     }
     else{
         return{
             error:true,
-            message:"User Inserted Unsuccessfull "
+            message:"User updated Unsuccessfull "
         }
     }
 }
