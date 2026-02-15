@@ -1,23 +1,14 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const { getAllUser, getUserById, insertUser, updateUser, deleteuser, checkLogin } = require('../services/users.services')
+const { authMiddleware } = require('../middleware/auth.middleware')
 
 
 const routeUser = express.Router()
+
+routeUser.use(authMiddleware)  // middleWare
 //getall
-routeUser.get('/', (req, res, next) => {
-    try {
-        const auth = req.headers.authorization
-        if (!auth) return res.status(401).send({ err: true, message: 'Unauthorized' })
-        const token = auth.split(' ')[1]
-        var decoded = jwt.verify(token, 'shhh')
-        req.user = decoded
-        next();
-    }
-    catch (err) {
-        res.status(401).send({ err: true, message: 'Unauthorized' })
-    }
-}, async (req, res) => {
+routeUser.get('/', async (req, res) => {
     const data = await getAllUser()
     res.send(data)
 })

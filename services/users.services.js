@@ -41,8 +41,8 @@ async function getUserById(id) {
 async function checkLogin(formData) {
     console.log("All Form Data:", JSON.stringify(formData))
 
-    const username = formData.UserName || formData.username || formData.userName || formData.user
-    const password = formData.Password || formData.password
+    const username = formData.UserName 
+    const password = formData.Password 
 
     if (!username || !password) {
         return { error: true, message: 'Missing username or password' }
