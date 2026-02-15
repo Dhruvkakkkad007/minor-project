@@ -47,7 +47,7 @@ async function deleteu(id) {
 
 async function getbyUsername(un) {
     try {
-        const [data, fields] = await db.query(`SELECT * FROM users where Username='${un}'`)
+        const [data, fields] = await db.query(`SELECT * FROM users where UserName='${un}'`)
         return data[0]
     } catch (err) {
         return false

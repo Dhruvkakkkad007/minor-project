@@ -1,11 +1,13 @@
-const { getAll,getbyid, addUser, editUser,deleteu,getbyUsername } = require("../models/users.models")
+const { getAll, getbyid, addUser, editUser, deleteu, getbyUsername } = require("../models/users.models")
+var jwt = require('jsonwebtoken')
+
 
 async function getAllUser() {
     const data = await getAll()
     if (data) {
         return {
             error: false,
-            data:data,
+            data: data,
             message: "User Fetched Successfully 100%"
         }
     }
@@ -20,90 +22,107 @@ async function getAllUser() {
 
 async function getUserById(id) {
     const data = await getbyid(id)
-    if(data){
+    if (data) {
         return {
-            error:false,
-            data:data[0],
-            message:"User Fetched Successfully By ID"
+            error: false,
+            data: data[0],
+            message: "User Fetched Successfully By ID"
         }
     }
-    else{
-        return{
-            error:true,
-            message:"User Fetched Unsuccessfull By ID"
+    else {
+        return {
+            error: true,
+            message: "User Fetched Unsuccessfull By ID"
         }
     }
 }
 
 
 async function checkLogin(formData) {
-    const data = await getbyUsername(formData.UserName)
+    console.log("All Form Data:", JSON.stringify(formData))
 
-    if(data){
+    const username = formData.UserName || formData.username || formData.userName || formData.user
+    const password = formData.Password || formData.password
+
+    if (!username || !password) {
+        return { error: true, message: 'Missing username or password' }
+    }
+
+    const data = await getbyUsername(username)
+    console.log("Returned Data:", data)
+
+    if (data && data.Password) {
+        if (data.Password === password) {
+            const token = jwt.sign({ UserID: data.UserID, UserName: data.UserName }, 'shhh')
+            return {
+                error: false,
+                data: token,
+                message: "User Login"
+            }
+        }
+        console.log("Password mismatch - DB Password:", data.Password, "Form Password:", password)
         return {
-            error:false,
-            data:data,
-            message:"User Login"
+            error: true,
+            message: "Username/password does not Match"
         }
     }
-    else{
-        return{
-            error:true,
-            message:"Login Unsuccessfull"
-        }
+
+    return {
+        error: true,
+        message: "Username/password does not Match"
     }
 }
 
 
 async function insertUser(formData) {
     const data = await addUser(formData)
-    if(data){
+    if (data) {
         return {
-            error:false,
-            data:data,
-            message:"User Inserted Successfully"
+            error: false,
+            data: data,
+            message: "User Inserted Successfully"
         }
     }
-    else{
-        return{
-            error:true,
-            message:"User Inserted Unsuccessfull "
+    else {
+        return {
+            error: true,
+            message: "User Inserted Unsuccessfull "
         }
     }
 }
 
 async function updateUser(id, formData) {
-       const data = await editUser(id,formData)
-    if(data){
+    const data = await editUser(id, formData)
+    if (data) {
         return {
-            error:false,
+            error: false,
             data: data,
-            message:"User updated Successfully"
+            message: "User updated Successfully"
         }
     }
-    else{
-        return{
-            error:true,
-            message:"User updated Unsuccessfull "
+    else {
+        return {
+            error: true,
+            message: "User updated Unsuccessfull "
         }
     }
 }
 
 async function deleteuser(id) {
-       const data = await deleteu(id)
-    if(data){
+    const data = await deleteu(id)
+    if (data) {
         return {
-            error:false,
-            data:data,
-            message:"User Deleted Successfully"
+            error: false,
+            data: data,
+            message: "User Deleted Successfully"
         }
     }
-    else{
-        return{
-            error:true,
-            message:"User Deleted Unsuccessfull"
+    else {
+        return {
+            error: true,
+            message: "User Deleted Unsuccessfull"
         }
     }
 }
 
-module.exports = { getAllUser, getUserById, insertUser, deleteuser, updateUser,checkLogin}
+module.exports = { getAllUser, getUserById, insertUser, deleteuser, updateUser, checkLogin }
